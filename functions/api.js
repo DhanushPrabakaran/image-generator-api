@@ -5,7 +5,7 @@ const serverless = require ('serverless-http');
 const bodyParser = require ('body-parser');
 const { MongoClient } = require ('mongodb');
 const url = 'mongodb+srv://Dhanush:SD18A2004@cluster0.2s94ek1.mongodb.net/';
-//app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 const mongoClient = new MongoClient(url);
 const cors = require("cors");
@@ -26,7 +26,7 @@ const hand = async (event) => {
     try {
         const database = (await clientPromise).db("mini_project");
         const collection =await database.collection("image_generator");
-         const results = await collection.find({}).limit(10).toArray();
+         const results = await collection.find({}).limit(5).toArray();
         
         return {
             statusCode: 200,
