@@ -8,7 +8,7 @@ const url = 'mongodb+srv://Dhanush:SD18A2004@cluster0.2s94ek1.mongodb.net/';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 const mongoClient = new MongoClient(url);
-const cors = require("cors");
+const cors = require("cors");      
 app.use(express.json({limit: '50mb'}));
 app.options(cors()); 
 app.use((req, res, next) => {
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
     );
     next();
   });
-
+                                           
 const clientPromise = mongoClient.connect();
 
 const hand = async (event) => {
@@ -51,8 +51,36 @@ router.post('/post',async(req,res)=>{
 
     }catch(err){
         res.send({statusCode: 500, body: err.toString()});
+    }});
+router.post('/get',async(req,res)=>
+{try
+    {
+  let data=JSON.parse(req.body) ;
+    const agg = [
+        {
+          '$search': {
+            'index': 'default', 
+            'text': {
+              'query': 'modern home', 
+              'path': {
+                'wildcard': '*'
+              }
+            }
+          }
+        }
+      ];  
+    const database = (await clientPromise).db("mini_project");
+    const collection =database.collection("image_generator");
+
+    const results = await collection.aggregate(agg).limit(1).toArray();
+         
+       
+    res.send(JSON.stringify(results));
+    }catch(err){
+        res.send({statusCode: 500, body: err.toString()});
     }
-     
 });
+     
+
 app.use("/",router);
 module.exports.handler=serverless(app);
