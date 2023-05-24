@@ -19,15 +19,29 @@ app.use((req, res, next) => {
     );
     next();
   });
-
-const clientPromise = mongoClient.connect();
+  const agg = [
+    {
+      '$search': {
+        'index': 'default', 
+        'text': {
+          'query': 'modern home', 
+          'path': {
+            'wildcard': '*'
+          }
+        }
+      }
+    }
+  ];
+  
+  
 
 const hand = async (event) => {
     try {
-        const database = (await clientPromise).db("mini_project");
+        const database = (await mongoClient).db("mini_project");
         const collection =await database.collection("image_generator");
-         const results = await collection.find({}).limit(5).toArray();
-        
+         const resul = await collection.aggregate(agg).limit(1);
+         
+        const  results = await resul.toArray();
         return {
             statusCode: 200,
             body: JSON.stringify(results),
