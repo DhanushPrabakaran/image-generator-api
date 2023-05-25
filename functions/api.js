@@ -10,13 +10,32 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const mongoClient = new MongoClient(url);
 const cors = require("cors");      
 app.use(express.json({limit: '50mb'}));
-app.options(cors()); 
+
+var corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.options(cors(corsOptions)); 
+// callback(null, {
+//   statusCode: 200,
+//   body: "Hello, world!",
+//   headers: {
+//     "access-control-allow-origin": "*",
+//     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+//     'Access-Control-Allow-Methods': '*'
+//   }
+// });
 app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.header(
+   res.setHeader("Access-Control-Allow-Origin", "*");
+   res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
     );
+//     response.setHeader("Access-Control-Allow-Origin", "*");
+// response.setHeader("Access-Control-Allow-Credentials", "true");
+// response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+// response.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
+
     next();
   });
 
@@ -44,9 +63,10 @@ const hand = async (event) => {
     try {
         const database = (await mongoClient).db("mini_project");
         const collection =await database.collection("image_generator");
-         const resul = await collection.aggregate(agg).limit(1);
-         
-        const  results = await resul.toArray();
+
+        //  const resul = await collection.aggregate(agg).limit(1);
+        const results = await collection.find().sort({'_id': -1}).limit(4).toArray();
+        // const  results = await resul.toArray();
         return {
             statusCode: 200,
             body: JSON.stringify(results),
@@ -62,7 +82,6 @@ router.get('/',async function (req, res) {
     });
 router.post('/post',async(req,res)=>{
     try{
-
         const database = (await clientPromise).db("mini_project");
         const collection =await database.collection("image_generator");
         const results = await collection.insertOne(req.body);
@@ -94,7 +113,7 @@ router.post('/get',async(req,res)=>
     const results = await collection.aggregate(agg).limit(1).toArray();
          
        
-    res.send(JSON.stringify(results));
+    res.send(results);
     }catch(err){
         res.send({statusCode: 500, body: err.toString()});
     }
