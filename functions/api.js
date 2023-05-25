@@ -10,32 +10,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const mongoClient = new MongoClient(url);
 const cors = require("cors");      
 app.use(express.json({limit: '50mb'}));
-
-var corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-app.options(cors(corsOptions)); 
-// callback(null, {
-//   statusCode: 200,
-//   body: "Hello, world!",
-//   headers: {
-//     "access-control-allow-origin": "*",
-//     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-//     'Access-Control-Allow-Methods': '*'
-//   }
-// });
+app.options(cors()); 
 app.use((req, res, next) => {
-   res.setHeader("Access-Control-Allow-Origin", "*");
-   res.header(
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.header(
       "Access-Control-Allow-Headers",
       "Origin, X-Requested-With, Content-Type, Accept"
     );
-//     response.setHeader("Access-Control-Allow-Origin", "*");
-// response.setHeader("Access-Control-Allow-Credentials", "true");
-// response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-// response.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
-
     next();
   });
 
