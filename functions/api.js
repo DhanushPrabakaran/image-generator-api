@@ -28,7 +28,7 @@ const clientPromise = mongoClient.connect();
       '$search': {
         'index': 'default', 
         'text': {
-          'query': 'modern home', 
+          'query': "\"modern home\"", 
           'path': {
             'wildcard': '*'
           }
@@ -72,15 +72,15 @@ router.post('/post',async(req,res)=>{
         res.send({statusCode: 500, body: err.toString()});
     }});
 router.post('/get',async(req,res)=>
-{try
-    {
-  let data=JSON.parse(req.body) ;
+{
+  try{
+ //let data=JSON.parse(req.body) ;
     const agg = [
         {
           '$search': {
             'index': 'default', 
             'text': {
-              'query': 'modern home', 
+              'query': 'home', 
               'path': {
                 'wildcard': '*'
               }
