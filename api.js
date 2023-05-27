@@ -73,10 +73,10 @@ router.post('/post',async(req,res)=>{
 
 router.post('/login',async(req,res)=>{
   try{
-    let dat = JSON.parse(req);
+   // let dat = JSON.parse(req);
     const database = (await clientPromise).db("mini_project");
     const collection =await database.collection("users");
-    const results = await collection.find({"email":dat.body.email,"password":dat.body.password});
+    const results = await collection.find({"email":req.body.email,"password":req.body.password});
     if(results.length>0){
       res.send(JSON.stringify(results));
       }else{
