@@ -1,7 +1,7 @@
 const express = require ('express');
 const app = express();
 const router = express.Router();
-const serverless = require ('serverless-http');
+// const serverless = require ('serverless-http');
 const bodyParser = require ('body-parser');
 const { MongoClient } = require ('mongodb');
 const url = 'mongodb+srv://Dhanush:SD18A2004@cluster0.2s94ek1.mongodb.net/';
@@ -131,4 +131,7 @@ router.post('/get',async(req,res)=>
      
 
 app.use("/",router);
-module.exports.handler=serverless(app);
+// module.exports.handler=serverless(app);
+app.listen(3000,()=>{
+console.log("server on");
+});
