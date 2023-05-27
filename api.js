@@ -128,10 +128,11 @@ router.post('/get',async(req,res)=>
         res.send({statusCode: 500, body: err.toString()});
     }
 });
-     
+const port = process.env.PORT || 3000;
 
 app.use("/",router);
 // module.exports.handler=serverless(app);
-app.listen(3000,()=>{
-console.log("server on");
-});
+// app.listen(3000,()=>{
+// console.log("server on");
+// });
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
