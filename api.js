@@ -44,7 +44,7 @@ const hand = async (event) => {
     try {
         const database = (await mongoClient).db("mini_project");
         const collection =await database.collection("image_generator");
-         const resul = await collection.find({}).sort({_id:-1}).limit(5);
+         const resul = await collection.find({}).sort({_id:-1});
          
         const  results = await resul.toArray();
         return {
@@ -120,7 +120,7 @@ router.post('/get',async(req,res)=>
     const database = (await clientPromise).db("mini_project");
     const collection =database.collection("image_generator");
 
-    const results = await collection.aggregate(agg).limit(1).toArray();
+    const results = await collection.aggregate(agg).toArray();
          
        
     res.send(JSON.stringify(results));
