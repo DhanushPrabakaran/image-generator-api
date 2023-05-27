@@ -1,7 +1,7 @@
 const express = require ('express');
 const app = express();
 const router = express.Router();
-const serverless = require ('serverless-http');
+// const serverless = require ('serverless-http');
 const bodyParser = require ('body-parser');
 const { MongoClient } = require ('mongodb');
 const url = 'mongodb+srv://Dhanush:SD18A2004@cluster0.2s94ek1.mongodb.net/';
@@ -44,7 +44,7 @@ const hand = async (event) => {
     try {
         const database = (await mongoClient).db("mini_project");
         const collection =await database.collection("image_generator");
-         const resul = await collection.find({}).sort({_id:-1}).limit(5);
+         const resul = await collection.find({}).sort({_id:-1});
          
         const  results = await resul.toArray();
         return {
@@ -120,7 +120,7 @@ router.post('/get',async(req,res)=>
     const database = (await clientPromise).db("mini_project");
     const collection =database.collection("image_generator");
 
-    const results = await collection.aggregate(agg).limit(1).toArray();
+    const results = await collection.aggregate(agg).toArray();
          
        
     res.send(JSON.stringify(results));
@@ -128,7 +128,11 @@ router.post('/get',async(req,res)=>
         res.send({statusCode: 500, body: err.toString()});
     }
 });
-     
+const port = process.env.PORT || 3000;
 
 app.use("/",router);
-module.exports.handler=serverless(app);
+// module.exports.handler=serverless(app);
+// app.listen(3000,()=>{
+// console.log("server on");
+// });
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
