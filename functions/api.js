@@ -44,7 +44,7 @@ const hand = async (event) => {
     try {
         const database = (await mongoClient).db("mini_project");
         const collection =await database.collection("image_generator");
-         const resul = await collection.aggregate(agg).limit(1);
+         const resul = await collection.find({}).sort({_id:-1}).limit(5);
          
         const  results = await resul.toArray();
         return {
@@ -67,20 +67,48 @@ router.post('/post',async(req,res)=>{
         const collection =await database.collection("image_generator");
         const results = await collection.insertOne(req.body);
         res.send(JSON.stringify(results));
-
     }catch(err){
         res.send({statusCode: 500, body: err.toString()});
     }});
+
+router.post('/login',async(req,res)=>{
+  try{
+    const database = (await clientPromise).db("mini_project");
+    const collection =await database.collection("image_generator");
+    const results = await collection.find({"email":req.body.email,"password":req.body.password});
+    if(results.length>0){
+      res.send(JSON.stringify(results));
+      }else{
+        res.send({statusCode: 500, body: "Invalid Credentials"});
+        }
+        }catch(err){
+   
+          res.send({statusCode: 500, body: err.toString()});
+          }
+
+}); 
+router.post('/register',async(req,res)=>{
+  try{
+    const database = (await clientPromise).db("mini_project");
+    const collection =await database.collection("image_generator");
+    const results = await collection.insertOne(req.body);
+    res.send(JSON.stringify(results));
+    }catch(err){
+      res.send({statusCode: 500, body: err.toString()});
+      }
+
+});   
 router.post('/get',async(req,res)=>
-{try
-    {
-  let data=JSON.parse(req.body) ;
+{
+  try{
+  let body=req.body;
+  let text = body.search;
     const agg = [
         {
           '$search': {
             'index': 'default', 
             'text': {
-              'query': 'modern home', 
+              'query': `${text}`, 
               'path': {
                 'wildcard': '*'
               }
