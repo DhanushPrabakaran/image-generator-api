@@ -19,7 +19,6 @@ app.use((req, res, next) => {
     );
     next();
   });
-
                                            
 const clientPromise = mongoClient.connect();
 
@@ -36,10 +35,6 @@ const clientPromise = mongoClient.connect();
       }
     }
   ];
-  
-  
-
-
 const hand = async (event) => {
     try {
         const database = (await mongoClient).db("mini_project");
@@ -73,12 +68,15 @@ router.post('/post',async(req,res)=>{
 
 router.post('/login',async(req,res)=>{
   try{
-    let dat = JSON.parse(req);
+    //let dat = JSON.parse(req);
     const database = (await clientPromise).db("mini_project");
     const collection =await database.collection("users");
-    const results = await collection.find({"email":dat.body.email,"password":dat.body.password});
+    const results = await collection.find({"email":req.body.email,"password":req.body.password}).toArray();
+    
     if(results.length>0){
-      res.send(JSON.stringify(results));
+      //console.log(dat);
+     // res.send(JSON.stringify(results));
+     res.send({statusCode: 200, body: "valid Credentials"});
       }else{
         res.send({statusCode: 500, body: "Invalid Credentials"});
         }
@@ -131,8 +129,5 @@ router.post('/get',async(req,res)=>
 const port = process.env.PORT || 3000;
 
 app.use("/",router);
-// module.exports.handler=serverless(app);
-// app.listen(3000,()=>{
-// console.log("server on");
-// });
+
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
