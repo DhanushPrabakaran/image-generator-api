@@ -39,7 +39,7 @@ const hand = async (event) => {
     try {
         const database = (await mongoClient).db("mini_project");
         const collection =await database.collection("image_generator");
-         const resul = await collection.find({}).sort({_id:-1});
+         const resul = await collection.find({}).limit(10).sort({_id:-1});
          
         const  results = await resul.toArray();
         return {
@@ -78,7 +78,8 @@ router.post('/login',async(req,res)=>{
      // res.send(JSON.stringify(results));
      res.send({statusCode: 200, body: "valid Credentials"});
       }else{
-        res.send({statusCode: 500, body: "Invalid Credentials"});
+      //  res.send({statusCode: 500, body: "Invalid Credentials"});
+      res.send({statusCode: 500, body:JSON.stringify(results) });
         }
         }catch(err){
    
