@@ -89,10 +89,11 @@ router.post('/login',async(req,res)=>{
 
 });
 router.get("/delete/:id",async(req,res)=>{
-  //console.log(req.params.id);
+  console.log(req.params.id);
   const database = (await clientPromise).db("mini_project");
-  const collection =await database.collection("users");
-  const results = await collection.deleteOne({_id:req.params.id});
+  const collection =await database.collection("image_generator");
+  const results = await collection.find({"_id":req.params.id});
+  console.log(results);
   res.send(JSON.stringify(results));
    
   }); 
