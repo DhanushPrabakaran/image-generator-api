@@ -87,7 +87,15 @@ router.post('/login',async(req,res)=>{
           res.send({statusCode: 500, body: err.toString()});
           }
 
-}); 
+});
+router.get("/delete/:id",async(req,res)=>{
+  //console.log(req.params.id);
+  const database = (await clientPromise).db("mini_project");
+  const collection =await database.collection("users");
+  const results = await collection.deleteOne({_id:req.params.id});
+  res.send(JSON.stringify(results));
+   
+  }); 
 router.post('/register',async(req,res)=>{
   try{
     const database = (await clientPromise).db("mini_project");
