@@ -76,7 +76,7 @@ router.post('/login',async(req,res)=>{
     if(results.length>0){
       //console.log(dat);
      // res.send(JSON.stringify(results));
-     res.send({statusCode: 200, body: "valid Credentials"});
+     //res.send({statusCode: 200, body: "valid Credentials"});
       }else{
       //  res.send({statusCode: 500, body: "Invalid Credentials"});
       res.send({statusCode: 500, body:JSON.stringify(results) });
@@ -98,6 +98,7 @@ router.post('/register',async(req,res)=>{
       }
 
 });   
+
 router.post('/get',async(req,res)=>
 {
   try{
