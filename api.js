@@ -76,10 +76,11 @@ router.post('/login',async(req,res)=>{
     if(results.length>0){
       //console.log(dat);
      // res.send(JSON.stringify(results));
+     res.send({statusCode: 500, body:JSON.stringify(results) });
      //res.send({statusCode: 200, body: "valid Credentials"});
       }else{
-      //  res.send({statusCode: 500, body: "Invalid Credentials"});
-      res.send({statusCode: 500, body:JSON.stringify(results) });
+        res.send({statusCode: 500, body: "Invalid Credentials"});
+      
         }
         }catch(err){
    
