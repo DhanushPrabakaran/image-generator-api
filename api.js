@@ -1,9 +1,16 @@
 const express = require ('express');
 const app = express();
 const router = express.Router();
+
 // const serverless = require ('serverless-http');
 const bodyParser = require ('body-parser');
-const { MongoClient } = require ('mongodb');
+// const { MongoClient } = require ('mongodb');
+
+const { MongoClient, ObjectId } = require('mongodb');
+//const id = new ObjectID();
+// var mongodb = require("mongodb");
+// var ObjectID = require('mongodb').ObjectID;
+//var objectId = new ObjectID();
 const url = 'mongodb+srv://Dhanush:SD18A2004@cluster0.2s94ek1.mongodb.net/';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -89,12 +96,13 @@ router.post('/login',async(req,res)=>{
 
 });
 router.get("/delete/:id",async(req,res)=>{
-  console.log(req.params.id);
+  const id = req.params.id;
   const database = (await clientPromise).db("mini_project");
-  const collection =await database.collection("image_generator");
-  const results = await collection.find({"_id":req.params.id});
-  console.log(results);
-  res.send(JSON.stringify(results));
+        const collection =await database.collection("image_generator");
+  const query = { _id: new ObjectId(id) };
+
+  const result = await collection.deleteOne(query);
+  res.send(result);
    
   }); 
 router.post('/register',async(req,res)=>{
