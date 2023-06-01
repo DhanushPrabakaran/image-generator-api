@@ -29,7 +29,7 @@ app.use(express.json({limit: '50mb'}));
 var corsOptions = {
   origin: '*',
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-}          
+};
 app.use(cors(corsOptions));                     
 const clientPromise = mongoClient.connect();
 
