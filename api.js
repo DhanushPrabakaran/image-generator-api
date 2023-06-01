@@ -79,11 +79,13 @@ router.post('/post',async(req,res)=>{
 
 router.post('/login',async(req,res)=>{
   try{
+
     //let dat = JSON.parse(req);
     const database = (await clientPromise).db("mini_project");
     const collection =await database.collection("users");
     const results = await collection.find({"email":req.body.email,"password":req.body.password}).toArray();
     
+
     if(results.length>0){
       //console.log(dat);
      // res.send(JSON.stringify(results));
