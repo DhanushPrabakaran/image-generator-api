@@ -123,6 +123,36 @@ router.post('/register',async(req,res)=>{
 
 });   
 
+router.post('/get/user',async(req,res)=>
+{
+  try{
+  let body=req.body;
+  let text = body.search;
+    // const agg = [
+    //     {
+    //       '$search': {
+    //         'index': 'default', 
+    //         'text': {
+    //           'query': `${text}`, 
+    //           'path': {
+    //             'wildcard': '*'
+    //           }
+    //         }
+    //       }
+    //     }
+    //   ];  
+    const database = (await clientPromise).db("mini_project");
+    const collection =database.collection("image_generator");
+
+    const results = await collection.find({name:`${text}`}).toArray();
+         
+       
+    res.send(JSON.stringify(results));
+    }catch(err){
+        res.send({statusCode: 500, body: err.toString()});
+    }
+});
+
 router.post('/get',async(req,res)=>
 {
   try{
@@ -144,7 +174,7 @@ router.post('/get',async(req,res)=>
     const database = (await clientPromise).db("mini_project");
     const collection =database.collection("image_generator");
 
-    const results = await collection.aggregate(agg).toArray();
+    const results = await collection.aggregate(agg).sort({id:-1}).toArray();
          
        
     res.send(JSON.stringify(results));
