@@ -144,7 +144,7 @@ router.post('/get/user',async(req,res)=>
     const database = (await clientPromise).db("mini_project");
     const collection =database.collection("image_generator");
 
-    const results = await collection.find({name:`${text}`}).toArray();
+    const results = await collection.find({name:`${text}`}).sort({_id:-1}).toArray();
          
        
     res.send(JSON.stringify(results));
