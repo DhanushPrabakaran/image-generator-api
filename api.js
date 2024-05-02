@@ -6,7 +6,7 @@ const bodyParser = require ('body-parser');
 
 const { MongoClient, ObjectId } = require('mongodb');
 
-const url = 'mongodb+srv://Dhanush:SD18A2004@cluster0.2s94ek1.mongodb.net/';
+const url = 'mongodb+srv://Dhanush:V7OKCcur3Hzgc0SQ@cluster0.2s94ek1.mongodb.net/';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 const mongoClient = new MongoClient(url);
